@@ -1,0 +1,21 @@
+.bg-inverse {
+  background-color: #292b2c; }
+
+.navbar-inverse .navbar-brand {
+  color: #fff; }
+
+.navbar .container {
+  position: relative; }
+  .navbar .container .navbar-nav {
+    display: inline;
+    left: 150px;
+    position: absolute;
+    top: 8px; }
+    .navbar .container .navbar-nav .nav-item {
+      display: inline; }
+      .navbar .container .navbar-nav .nav-item .nav-link {
+        display: inline;
+        padding: 5px;
+        color: rgba(255, 255, 255, 0.5); }
+        .navbar .container .navbar-nav .nav-item .nav-link:hover {
+          color: rgba(255, 255, 255, 0.75); }

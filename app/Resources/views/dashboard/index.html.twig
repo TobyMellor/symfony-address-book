@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container address-book-container">
+        <h1>Address Book</h1><br />
+        <div class="row">
+            <div class="col-md-8">
+                <h2>All Contacts</h2>
+                {% if contacts|length > 0 %}
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Phone #</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contact in contacts %}
+                            <tr>
+                                <th class="contact-id" scope="row">{{ contact.id }}</th>
+                                <td class="contact-name">{{ contact.name }}</td>
+                                <td class="contact-phone">{{ contact.phone }}</td>
+                                <td class="contact-email">{{ contact.email }}</td>
+                                <td>
+                                    <a href="{{ path('delete-contact', { 'id': contact.id }) }}" class="btn btn-danger">Delete</a>
+                                    <a href="javascript:void(0);" class="btn btn-warning edit-contact">Edit</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    There are no contacts in the address book yet.
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <h2>Create Contact</h2>
+                <form name="contact_form" method="POST">
+                    <div id="contact_form">
+                        <div class="form-group">
+                            <label for="contact_form_name">{{ 'contact.create.name.label'|trans({}, 'addressbook') }}</label>
+                            <input id="contact_form_name" class="form-control" name="contact_form[name]" required="required" type="text" placeholder="{{ 'contact.create.name.placeholder'|trans({}, 'addressbook') }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact_form_phone">{{ 'contact.create.phone.label'|trans({}, 'addressbook') }}</label>
+                            <input id="contact_form_phone" class="form-control" name="contact_form[phone]" required="required" type="text" placeholder="{{ 'contact.create.phone.placeholder'|trans({}, 'addressbook') }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact_form_email">{{ 'contact.create.email.label'|trans({}, 'addressbook') }}</label>
+                            <input id="contact_form_email" class="form-control" name="contact_form[email]" required="required" type="email" placeholder="{{ 'contact.create.email.placeholder'|trans({}, 'addressbook') }}">
+                        </div>
+                        
+                        <button type="submit" id="contact_form_save" name="contact_form[save]" class="btn btn-success">Save</button>
+                        
+                        <input id="contact_form__token" name="contact_form[_token]" value="{{ csrf_token }}" type="hidden">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <form id="edit-contact-form" action="javascript:void(0);" method="POST">
+        <div class="modal fade" id="edit-contact-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="edit_contact_form">
+                            <div class="form-group">
+                                <label for="edit_contact_form_name">{{ 'contact.create.name.label'|trans({}, 'addressbook') }}</label>
+                                <input id="edit_contact_form_name" class="form-control" name="name" required="required" type="text" placeholder="{{ 'contact.create.name.placeholder'|trans({}, 'addressbook') }}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="edit_contact_form_phone">{{ 'contact.create.phone.label'|trans({}, 'addressbook') }}</label>
+                                <input id="edit_contact_form_phone" class="form-control" name="phone" required="required" type="text" placeholder="{{ 'contact.create.phone.placeholder'|trans({}, 'addressbook') }}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="edit_contact_form_email">{{ 'contact.create.email.label'|trans({}, 'addressbook') }}</label>
+                                <input id="edit_contact_form_email" class="form-control" name="email" required="required" type="email" placeholder="{{ 'contact.create.email.placeholder'|trans({}, 'addressbook') }}">
+                            </div>
+                            
+                            <input id="edit_contact_form__token" name="_token" value="{{ csrf_token }}" type="hidden">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="contact_form_save" name="contact_form[save]" class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $(function() {
+            $('.edit-contact').on('click', function() {
+                var contactRow   = $(this).closest('tr'),
+                    contactId    = contactRow.find('.contact-id').text(),
+                    contactName  = contactRow.find('.contact-name').text(),
+                    contactPhone = contactRow.find('.contact-phone').text(),
+                    contactEmail = contactRow.find('.contact-email').text();
+                
+                $('#edit-contact-modal .modal-title').text('Edit <strong>' + contactName + '</strong>');
+                $('#edit-contact-modal .modal-body #edit_contact_form_name').val(contactName);
+                $('#edit-contact-modal .modal-body #edit_contact_form_phone').val(contactPhone);
+                $('#edit-contact-modal .modal-body #edit_contact_form_email').val(contactEmail);
+                
+                $('#edit-contact-form').attr('action', '{{ path('edit-contact-no-id') }}/' + contactId)
+                
+                $('#edit-contact-modal').show(); 
+            });
+        });
+    </script>
+
+{% endblock %}

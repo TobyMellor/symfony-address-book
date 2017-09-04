@@ -1,0 +1,19 @@
+contact:
+    create:
+        success: "Successfully created the contact!"
+        error: "An error occurred when creating the contact!"
+        name:
+            label: "Full Name"
+            placeholder: "Enter the full name..."
+        phone:
+            label: "Phone Number"
+            placeholder: "Enter the phone number..."
+        email:
+            label: "Email Addresss"
+            placeholder: "Enter the email address..."
+    delete:
+        success: "Successfully deleted the contact!"
+        error: "An error occurred when deleting the contact!"
+    edit:
+        success: "Successfully edited the contact!"
+        error: "An error occurred when editing the contact!"

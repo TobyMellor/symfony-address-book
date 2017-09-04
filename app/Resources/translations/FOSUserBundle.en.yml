@@ -1,0 +1,11 @@
+security:
+    login:
+        email:
+            label: "Email"
+            placeholder: "Enter your email address..."
+            help_text: "You can also enter your username"
+        password:
+            label: "Password"
+            placeholder: "Enter your password..."
+        messages:
+            unauthorized: "You need to login before you can access that!"
